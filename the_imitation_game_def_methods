@@ -1,0 +1,43 @@
+def move(encrypted_message, num_letters):
+    return encrypted_message[num_letters:] + encrypted_message[:num_letters]
+
+def insert(encrypted_message, index, value):
+    return encrypted_message[:index] + value + encrypted_message[index:]
+
+def change_all(encrypted_message, substring, replacement):
+    return encrypted_message.replace(substring, replacement)
+
+def decode_message(encrypted_message, commands):
+    for command in commands:
+        tokens = command.split('|')
+        action = tokens[0]
+
+        if action == "Move":
+            num_letters = int(tokens[1])
+            encrypted_message = move(encrypted_message, num_letters)
+        elif action == "Insert":
+            index = int(tokens[1])
+            value = tokens[2]
+            encrypted_message = insert(encrypted_message, index, value)
+        elif action == "ChangeAll":
+            substring = tokens[1]
+            replacement = tokens[2]
+            encrypted_message = change_all(encrypted_message, substring, replacement)
+
+    return encrypted_message
+
+def main():
+    encrypted_message = input()
+    commands = []
+
+    while True:
+        command = input()
+        if command == "Decode":
+            break
+        commands.append(command)
+
+    decrypted_message = decode_message(encrypted_message, commands)
+    print(f"The decrypted message is: {decrypted_message}")
+
+if __name__ == "__main__":
+    main()
