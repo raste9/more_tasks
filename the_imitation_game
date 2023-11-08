@@ -1,0 +1,27 @@
+encrypted_massage = input()
+commands = []
+
+while True:
+    command = input()
+    if command == 'Decode':
+        break
+    commands.append(command)
+
+for command in commands:
+    tokens = command.split('|')
+    action = tokens[0]
+
+    if action == 'Move':
+        num_letters = int(tokens[1])
+        encrypted_massage = encrypted_massage[num_letters:] + encrypted_massage[:num_letters]
+    elif action == 'Insert':
+        index = int(tokens[1])
+        value = tokens[2]
+        encrypted_massage = encrypted_massage[:index] + value + encrypted_massage[index:]
+    elif action == 'ChangeAll':
+        substring = tokens[1]
+        replacement = tokens[2]
+        encrypted_massage = encrypted_massage.replace(substring, replacement)
+
+print(f'The decrypted message is: {encrypted_massage}')
+
