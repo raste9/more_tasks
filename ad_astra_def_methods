@@ -1,0 +1,35 @@
+import re
+
+def extract_food_info(text_string):
+    regex = r'(#|\|)([A-Za-z\s]+)\1(\d{2}/\d{2}/\d{2})\1(\d{1,5})\1'
+    food_info = []
+    total_calories = 0
+
+    for match in re.finditer(regex, text_string):
+        item_name, expiration_date, calories = match.group(2), match.group(3), int(match.group(4))
+        food_info.append((item_name, expiration_date, calories))
+        total_calories += calories
+
+    return food_info, total_calories
+
+
+def calculate_days_to_last(total_calories, daily_calories=2000):
+    days_to_last = total_calories // daily_calories
+    return days_to_last
+
+
+def main():
+    text_string = input()
+    food_info, total_calories = extract_food_info(text_string)
+
+    if not food_info:
+        print("You have food to last you for: 0 days!")
+    else:
+        days_to_last = calculate_days_to_last(total_calories)
+        print(f"You have food to last you for: {days_to_last} days!")
+        for item_name, expiration_date, calories in food_info:
+            print(f"Item: {item_name}, Best before: {expiration_date}, Nutrition: {calories}")
+
+
+if __name__ == "__main__":
+    main()
